@@ -10,22 +10,32 @@ Let us first take a look at the different types of hard and soft constraints bef
 
 Hard constraints:
 
+
 forced partial assignment: 
 this hard constraint consists of up to 8 pairs (mach,task), with mach in {1,2,3,4,5,6,7,8} and task in {A,B,C,D,E,F,G,H}. Any assignment, that for any machine mach in one of the pairs does not assign the indicated task task to this machine is invalid. 
 Error handling: if among the pairs are two pairs with the same machine or two pairs with the same task, then the system should output "partial assignment error" and stop execution.
+
 forbidden machine: 
 this hard constraint consists of a list of pairs (mach,task), with mach in {1,2,3,4,5,6,7,8} and task in {A,B,C,D,E,F,G,H}. Any assignment, that assigns to a machine mach a task task that is in this list is invalid.
+
 too-near tasks: 
 this hard constraint consists of a list of pairs (task1,task2), with task1,task2 in {A,B,C,D,E,F,G,H}. Any assignment that assigns task1 to a machine i and task2 to machine i+1 (or task1 to machine 8 and task2 to machine 1) is invalid.
+
 For all these hard constraints, if in their description occurs either a machine that is not in {1,2,3,4,5,6,7,8} or a task that is not in {A,B,C,D,E,F,G,H}, then the system should terminate with the message "invalid machine/task".
+
+
 Soft constraints:
+
 
 machine penalties:
 this soft constraint is entered in the form of 8 lines each containing 8 natural numbers (including 0). If p is the number at position i on line j, then p is added to the penalty value of an assignment, if this assignment has assigned to machine j the task that is on the i-th position in A,B,C,D,E,F,G,H (so, the lines represent the machines and the columns represent the tasks).
 Problem handling: if there are more or less than 8 lines (of the form described above) or if one of the lines does not have enough numbers, then the system should output "machine penalty error" and stop execution.
+
 too-near penalities:
 this soft constraint is represented as a list of triples (task1,task2,p), with task1, task2 in {A,B,C,D,E,F,G,H} and p a natural number. p is added to the penalty value of an assignment, if this assignment has assigned task1 to a machine i and task2 to machine i+1 (or task1 to machine 8 and task2 to machine 1).
 Problem handling: if in any of the triples occurs a task that is not in {A,B,C,D,E,F,G,H}, then the system should terminate with the message "invalid task". If we have two triples (task1,task2,p1) and (task1,task2,p2) then the pi that appears last is the penality value to use.
+
+
 The overall penalty value of an assignment is the sum of all soft constraint penalties from above.
 For all these soft constraints, if the system expects a natural number and the input does not provide one, then the system should terminate with the message "invalid penalty".
 
