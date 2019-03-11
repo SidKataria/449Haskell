@@ -291,8 +291,8 @@ checkNatural pX n
           y = pX !! n		  
 checkNatural' :: String -> Bool
 checkNatural' penalty
-    | ('.' `elem` penalty) = False
-    | otherwise = penalty' > -1
+    | ('.' `elem` penalty) = False	-- Number is a double/float
+    | otherwise = penalty' > 0  --Number is less than 0
 	where penalty' = read penalty :: Int
 
 --Return True if element is an alphabet
