@@ -2,10 +2,10 @@ import Data.List
 import System.Exit
 import System.Environment
 import Text.Read
- 
+
 main = do
-        getTuplesFromFile "input.txt"
- 
+        getTuplesFromFile inputFileName
+
 
 getTuplesFromFile file1  = do
           contents1 <- readFile file1
@@ -13,7 +13,16 @@ getTuplesFromFile file1  = do
 
           let tuples = (getTuplesFromLinesRaw lines1)
 
-          putStrLn ("Number of tuples " ++ show (length tuples))
 
-{- Take an array of lines and return only those lines that start with "(" -}
+
+          let outputTuples = foldl1 (\x y -> x ++ "\n" ++ y) tuples
+
+          putStrLn ("Number of tuples " ++ show (length tuples))
+          putStrLn outputTuples
+
+
 getTuplesFromLinesRaw lineSet = filter (\x -> isPrefixOf "(" x) lineSet
+
+
+
+inputFileName = "input.txt"
