@@ -16,6 +16,7 @@ https://en.wikibooks.org/wiki/Haskell/Control_structures
 http://julio.meroh.net/2006/08/split-function-in-haskell.html
 https://stackoverflow.com/questions/19275100/string-split-into-6-parts-every-character-in-haskell
 https://codereview.stackexchange.com/questions/6992/approach-to-string-split-by-character-in-haskell
+https://wiki.haskell.org/IO_inside
 https://github.com/haskell/filepath/blob/master/Generate.hs
 https://hackage.haskell.org/package/base-4.12.0.0/docs/Data-Maybe.html
 https://github.com/sunahkim15/449-haskell/blob/master/FileIO.hs
@@ -261,8 +262,8 @@ checkTNT' sTasks n
 checkPval :: [[String]] -> Bool
 checkPval pX = val
     where val = correctMach && correctTask
-          correctMach = checkPval' mp 7
           correctTask = checkPval'' sp sLength
+		  correctMach = checkPval' mp 7
           mp = mpVal' (pX !! 3) 
           sp = toArray' (pX !! 4)  
           sLength = length sp - 1 
@@ -329,8 +330,8 @@ checkMT pX = mBool && tBool
 --Return true if M value is valid
 checkMach :: [[String]] -> Bool
 checkMach pX = correctFPA && correctFM
-    where correctFPA = checkMach' sFPA newLength
-          correctFM = checkMach' sFM newLength'
+    where correctFM = checkMach' sFM newLength'
+	      correctFPA = checkMach' sFPA newLength
           sFPA = toArray (pX !! 0) 
           sFM = toArray (pX !! 1)
           newLength = length sFPA - 1
@@ -347,8 +348,8 @@ checkMach' pX n
 --Return true if T value is valid
 checkTask :: [[String]] -> Bool
 checkTask pX = correctFPA && correctFM && correctTNT
-    where correctFPA = checkTask' sFPA newLength
-          correctFM = checkTask' sFM newLength'
+    where correctFM = checkTask' sFM newLength'
+	      correctFPA = checkTask' sFPA newLength
           sFPA = toArray (pX !! 0) 
           newLength = length sFPA - 1
           sFM = toArray (pX !! 1)
@@ -384,8 +385,8 @@ checkFPA pX = checkFPA' pX && checkFPA'' pX
 checkFPA' :: [[String]] -> Bool
 checkFPA' pX = tNew && mNew
     where sFPA = toArray (pX !! 0) 
+	      mFPA = [head x | x <- sFPA]
           tFPA = [last x | x <- sFPA]
-          mFPA = [head x | x <- sFPA]
           tNew = newAssignments tFPA ft
           mNew = newAssignments mFPA fm
           ft = length tFPA - 1
@@ -399,11 +400,11 @@ checkFPA'' pX = checkAssignments sFPA sFM n
 -- Check if all the inputs are valid and returns false if they aren't
 isCorrect :: [[String]] -> Bool
 isCorrect pX
-     | boolFPA == False = False
-     | boolFM  == False = False
-     | boolMP  == False = False
      | boolT   == False = False
+     | boolFM  == False = False
      | boolP   == False = False
+     | boolFPA == False = False
+     | boolMP  == False = False
      | otherwise = True
     where boolFPA = checkFPA pX
           boolFM  = checkMT pX
@@ -421,8 +422,8 @@ newAssignments pX n
           x = pX !! n
 --Checking if newly assignmened task already exists
 checkAssignments :: [[String]] -> [[String]] -> Int -> Bool
-checkAssignments [] _ _ = True
 checkAssignments _ [] _ = True
+checkAssignments [] _ _ = True
 checkAssignments sFPA sFM n
      | n < 0     = True
      | otherwise = (x `notElem` sFM) && checkAssignments sFPA sFM (n-1)
@@ -437,11 +438,11 @@ error' pX
     where isValid = isCorrect pX
 error'' :: [[String]] -> String
 error'' pX
-     | boolFPA == False = "partial assignment error"
-     | boolFM  == False = "invalid machine/task"
-     | boolMP  == False = "machine penalty error"
-     | boolT   == False = "invalid task"
+	 | boolT   == False = "invalid task"
+	 | boolFM  == False = "invalid machine/task"
      | boolP   == False = "invalid penalty"
+     | boolFPA == False = "partial assignment error"
+     | boolMP  == False = "machine penalty error"
 	 | otherwise = "Error while parsing input file"
     where boolFPA = checkFPA pX
           boolFM  = checkMT pX
