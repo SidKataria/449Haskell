@@ -262,8 +262,8 @@ checkTNT' sTasks n
 checkPval :: [[String]] -> Bool
 checkPval pX = val
     where val = correctMach && correctTask
+          correctMach = checkPval' mp 7
           correctTask = checkPval'' sp sLength
-		  correctMach = checkPval' mp 7
           mp = mpVal' (pX !! 3) 
           sp = toArray' (pX !! 4)  
           sLength = length sp - 1 
@@ -330,8 +330,8 @@ checkMT pX = mBool && tBool
 --Return true if M value is valid
 checkMach :: [[String]] -> Bool
 checkMach pX = correctFPA && correctFM
-    where correctFM = checkMach' sFM newLength'
-	      correctFPA = checkMach' sFPA newLength
+    where correctFPA = checkMach' sFPA newLength
+          correctFM = checkMach' sFM newLength'
           sFPA = toArray (pX !! 0) 
           sFM = toArray (pX !! 1)
           newLength = length sFPA - 1
@@ -348,8 +348,8 @@ checkMach' pX n
 --Return true if T value is valid
 checkTask :: [[String]] -> Bool
 checkTask pX = correctFPA && correctFM && correctTNT
-    where correctFM = checkTask' sFM newLength'
-	      correctFPA = checkTask' sFPA newLength
+    where correctFPA = checkTask' sFPA newLength
+          correctFM = checkTask' sFM newLength'
           sFPA = toArray (pX !! 0) 
           newLength = length sFPA - 1
           sFM = toArray (pX !! 1)
@@ -385,8 +385,8 @@ checkFPA pX = checkFPA' pX && checkFPA'' pX
 checkFPA' :: [[String]] -> Bool
 checkFPA' pX = tNew && mNew
     where sFPA = toArray (pX !! 0) 
-	      mFPA = [head x | x <- sFPA]
           tFPA = [last x | x <- sFPA]
+          mFPA = [head x | x <- sFPA]
           tNew = newAssignments tFPA ft
           mNew = newAssignments mFPA fm
           ft = length tFPA - 1
